@@ -5,7 +5,8 @@ const async = require('async');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// TODO: authenticate & authorization
+// TODO: Validate input
+
 // GET all posts
 router.get('/', verifyToken, function (req, res, next) {
 	if (!req.token) {

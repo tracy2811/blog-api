@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+// TODO: validate input
+// POST to login
 router.post('/login', function (req, res, next) {
 	models.Author.findOne({ 'username': req.body.username, }).exec(function (err, author) {
 		if (err) {
@@ -30,6 +32,7 @@ router.post('/login', function (req, res, next) {
 	});
 });
 
+// GET user info
 router.get('/', verifyToken, function (req, res, next) {
 	jwt.verify(req.token, process.env.SECRET_KEY, function (err, decoded) {
 		if (err) {
@@ -72,6 +75,7 @@ router.post('/', function (req, res, next) {
 });
 */
 
+// PUT (UPDATE) author info
 router.put('/', verifyToken, function (req, res, next) {
 	jwt.verify(req.token, process.env.SECRET_KEY, function (err, decoded) {
 		if (err) {
