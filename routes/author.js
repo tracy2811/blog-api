@@ -1,11 +1,12 @@
 require('dotenv').config();
+require('../middlewares/verifyToken');
 const models = require('../models');
+const validateInput = require('../middlewares/validateInput');
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-// TODO: validate input
 // POST to login
 router.post('/login', function (req, res, next) {
 	models.Author.findOne({ 'username': req.body.username, }).exec(function (err, author) {
@@ -76,10 +77,13 @@ router.post('/', function (req, res, next) {
 */
 
 // PUT (UPDATE) author info
-router.put('/', verifyToken, function (req, res, next) {
+router.put('/', verifyToken, validateInput.validateAuthor, function (req, res, next) {
 	jwt.verify(req.token, process.env.SECRET_KEY, function (err, decoded) {
 		if (err) {
 			return res.sendStatus('403');
+		}
+		if (req.errors) {
+			return res.status('422').json(req.errors);
 		}
 		bcrypt.hash(req.body.password, 10, function (err, hashedpassword) {
 			if (err) {
@@ -104,19 +108,6 @@ router.put('/', verifyToken, function (req, res, next) {
 		});
 	});
 });
-
-// TOKEN FORMAT
-// Authorization: bearer <access_token>
-
-function verifyToken(req, res, next) {
-	const bearerHeader = req.headers['authorization'];
-	if (typeof bearerHeader !== 'undefined') {
-		const bearer =  req.headers['authorization'];
-		const bearerToken = bearer.split(' ');
-		req.token = bearerToken[1];
-	}
-	next();
-}
 
 module.exports = router;
 

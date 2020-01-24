@@ -1,11 +1,11 @@
 require('dotenv').config();
+require('../middlewares/verifyToken');
 const models = require('../models');
+const validateInput = require('../middlewares/validateInput');
 const express = require('express');
 const async = require('async');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
-
-// TODO: Validate input
 
 // GET all posts
 router.get('/', verifyToken, function (req, res, next) {
@@ -160,7 +160,7 @@ router.get('/:postID/comments', verifyToken, function (req, res, next) {
 });
 
 // POST new comment
-router.post('/:postID/comments', function (req, res, next) {
+router.post('/:postID/comments', validateInput.validateComment, function (req, res, next) {
 	models.Post.findById(req.params.postID).exec(function (err, post) {
 		if (err) {
 			return res.sendStatus('500');
@@ -170,11 +170,18 @@ router.post('/:postID/comments', function (req, res, next) {
 			return res.sendStatus('404');
 		}
 
+		if (req.errors) {
+			return res.status('422').json(req.errors);
+		}
+
 		const comment = new models.Comment({
 			body: req.body.body,
-			name: req.body.name,
 			post: post._id,
 		});
+
+		if (req.body.name) {
+			comment.name = req.body.name;
+		}
 
 		comment.save(function (err) {
 			if (err) {
@@ -223,7 +230,7 @@ router.delete('/:postID/comments/:commentID', verifyToken, function (req, res, n
 });
 
 // PUT (UPDATE) specific comment
-router.put('/:postID/comments/:commentID', function (req, res, next) {
+router.put('/:postID/comments/:commentID', validateInput.validateComment, function (req, res, next) {
 	models.Comment.findOne({ _id: req.params.commentID, post: req.params.postID}).exec(function (err, comment) {
 		if (err) {
 			return res.sendStatus('500');
@@ -231,8 +238,13 @@ router.put('/:postID/comments/:commentID', function (req, res, next) {
 		if (!comment) {
 			return res.sendStatus('404');
 		}
+		if (req.errors) {
+			return res.status('422').json(req.errors);
+		}
 		comment.body = req.body.body;
-		comment.name = req.body.name;
+		if (req.body.name) {
+			comment.name = req.body.name;
+		}
 		comment.save(function (err) {
 			if (err) {
 				return res.sendStatus('500');
@@ -241,22 +253,6 @@ router.put('/:postID/comments/:commentID', function (req, res, next) {
 		});
 	});
 });
-
-// TOKEN FORMAT
-// Authorization: Bearer <access_token>
-
-// Verify token
-function verifyToken(req, res, next) {
-	const bearerHeader = req.headers['authorization'];
-	if (typeof bearerHeader !== 'undefined') {
-		// Split at space
-		const bearer = bearerHeader.split(' ');
-		// Get token from array
-		const bearerToken = bearer[1];
-		req.token = bearerToken;
-	}
-	next();
-}
 
 module.exports = router;
 
