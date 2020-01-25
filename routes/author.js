@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('../middlewares/verifyToken');
+const { verifyToken } = require('../middlewares/verifyToken');
 const models = require('../models');
 const validateInput = require('../middlewares/validateInput');
 const express = require('express');
@@ -14,15 +14,11 @@ router.post('/login', function (req, res, next) {
 			return res.status(500);
 		}
 		if (!author) {
-			return res.status(403).send({
-				message: 'Incorrect username'
-			});
+			return res.sendStatus(403);
 		}
 		bcrypt.compare(req.body.password, author.password, function (err, match) {
 			if (!match) {
-				return res.status(403).send({
-					message: 'Incorrect password'
-				});
+				return res.sendStatus(403);
 			}
 			jwt.sign({ author, }, process.env.SECRET_KEY, function (err, token) {
 				res.json({
@@ -35,24 +31,36 @@ router.post('/login', function (req, res, next) {
 
 // GET user info
 router.get('/', verifyToken, function (req, res, next) {
+	if (!req.token) {
+		models.Author.findOne({}, 'firstName lastName introduction').exec(function (err, author) {
+			if (err) {
+				return res.sendStatus('500');
+			}
+			if (!author) {
+				return res.sendStatus('404');
+			}
+			return res.json(author);
+		});
+		return;
+	}
+
 	jwt.verify(req.token, process.env.SECRET_KEY, function (err, decoded) {
 		if (err) {
 			return res.sendStatus('403');
 		}
-		/*
-		models.Author.findOne({ 'username': decoded.username, 'password': decoded.password}).exec(function (err, author) {
+		models.Author.findById(decoded.author._id).exec(function (err, author) {
 			if (err) {
 				return res.sendStatus('500');
 			}
 			if (!author) {
 				return res.sendStatus('403');
 			}
-		*/
 			return res.json(decoded);
+		});
 	});
 });
 
-/*
+/** There are no need to CREATE author
 router.post('/', function (req, res, next) {
 	bcrypt.hash(req.body.password, 10, function (err, hashedpassword) {
 		if (err) {

@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('../middlewares/verifyToken');
+const { verifyToken } = require('../middlewares/verifyToken');
 const models = require('../models');
 const validateInput = require('../middlewares/validateInput');
 const express = require('express');
@@ -12,12 +12,14 @@ router.get('/', verifyToken, function (req, res, next) {
 	if (!req.token) {
 		models.Post.find({ 'published': true, }, 'title body date').exec(function (err, posts) {
 			if (err) {
-				return res.sendStatus('500');
+				res.sendStatus('500');
+			} else {
+				res.json(posts);
 			}
-			res.json(posts);
 		});
 		return;
 	}
+
 	jwt.verify(req.token, process.env.SECRET_KEY, function (err, decoded) {
 		if (err) {
 			return res.sendStatus('403');
@@ -94,13 +96,14 @@ router.put('/:postID', verifyToken, function (req, res, next) {
 				return res.sendStatus('404');
 			}
 		});
+
 		const post = new models.Post({
 			title: req.body.title,
 			body: req.body.body,
 			published: !!req.body.published,
 			_id: req.params.postID,
 		});
-		models.Post.findByIdAndUpdate(req.params.postID, post, function (err, post) {
+		models.Post.findByIdAndUpdate(req.params.postID, post, {}, function (err, post) {
 			if (err) {
 				return res.sendStatus('500');
 			}
