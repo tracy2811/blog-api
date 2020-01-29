@@ -3,7 +3,7 @@ const message = document.querySelector('#message');
 const loginForm = document.querySelector('#login');
 const allButton = document.querySelector('#all');
 const newButton = document.querySelector('#new');
-const HOST = 'http://localhost:3000';
+const HOST = 'https://safe-badlands-07776.herokuapp.com/';
 let token;
 
 loginForm.addEventListener('submit', function (e) {
