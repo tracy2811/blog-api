@@ -9,6 +9,6 @@ Link to [API](https://safe-badlands-07776.herokuapp.com/)
 
 Two basic frontends, one for the blog itself and one for author, to test this API:
 - [Blog Page](https://tracy2811.github.io/blog-api/blog/)
-- [Author Page](https://tracy2811.github.io/blog-api/blog/)
+- [Author Page](https://tracy2811.github.io/blog-api/admin/)
      Login with username: tracy and password: nguyen
 
