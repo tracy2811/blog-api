@@ -1,4 +1,4 @@
-const HOST = 'http://localhost:3000';
+const HOST = 'https://safe-badlands-07776.herokuapp.com/';
 
 const title = document.querySelector('title');
 const home = document.querySelector('#home');
