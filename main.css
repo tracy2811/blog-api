@@ -1,4 +1,191 @@
 * {
   box-sizing: border-box;
-  font-family: 'Parisienne', cursive;
+}
+
+body {
+  font-family: 'Dancing Script', cursive;
+  font-size: 30px;
+  background: #fcdab7;
+  text-align: center;
+  color: #1d2d50;
+}
+
+h1 {
+  padding-top: 3rem;
+  padding-bottom: 1.5rem;
+  font-size: 2.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+h1 > a {
+  text-decoration: none;
+}
+
+a {
+  color: #1e5f74;
+}
+
+a:visited {
+  color: #133b5c;
+}
+
+li {
+  margin: 1em;
+}
+
+li > a {
+  display: block;
+  width: 7em;
+  background: rgba(30, 95, 116, 0.05);
+  border-radius: 0.3em;
+  transition: width 0.3s, font-size 0.3s;
+  text-decoration: none;
+  padding: 0.5em 0;
+  font-size: 1.5em;
+}
+
+li > a:hover {
+  font-size: 1.6em;
+  background-color: rgba(30, 95, 116, 0.15);
+  text-decoration: underline;
+  box-shadow: 0.1em 0.1em 0.4em 0.1em rgba(30, 95, 116, 0.3);
+}
+
+li > a > span {
+  display: block;
+}
+
+li > a > span:first-of-type{
+  height: 5em;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+main {
+  padding: 1em;
+  padding-bottom: 3em;
+  text-align: justify;
+}
+
+main * {
+  padding: 0.3em 0.3rem;
+}
+
+.clickable:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  box-shadow: -0.1em -0.1em 0.4em 0.1em rgba(30, 95, 116, 0.3);
+}
+
+.small {
+  font-size: 0.6em;
+}
+
+#intro {
+  font-size: 1.4em;
+  padding-bottom: 0.5rem;
+  background: rgba(30, 95, 116, 0.6);
+  color: #fcdab7;
+}
+
+#home {
+  text-transform: uppercase;
+  display: inline-block;
+  overflow: hidden;
+  color: #fcdab7;
+}
+
+header {
+  position: relative;
+}
+
+header > h1 {
+  background: rgba(30, 95, 116, 0.6);
+}
+
+#ani {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: -1;
+}
+
+input, button, select, textarea {
+  display: block;
+  font: inherit;
+  padding: 0.5em;
+  margin: 0.5em auto;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  border-radius: 0.2em;
+  outline: inherit;
+}
+
+textarea {
+  height: 20em;
+  width: 100%;
+}
+
+button {
+  background: #1d2d50;
+  color: #fcdab7;
+  min-width: 5em;
+}
+
+input:focus, select:focus {
+  box-shadow: 0 0 0.2em 0.1em rgba(30, 95, 116, 0.6);
+}
+
+button:hover {
+  cursor: pointer;
+  background: #1e5f74;
+  box-shadow: 0 0 0.2em 0.1em rgba(30, 95, 116, 0.6);
+}
+
+.bg {
+  background: rgba(30, 95, 116, 0.6);
+  color: #fcdab7;
+}
+
+.bg a {
+  color: #fcdab7;
+}
+
+#all {
+  margin-left: 0;
+}
+
+#new {
+  margin-right: 0;
 }

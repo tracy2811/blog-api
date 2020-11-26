@@ -1,10 +1,15 @@
 const main = document.querySelector('main');
 const message = document.querySelector('#message');
 const loginForm = document.querySelector('#login');
-const allButton = document.querySelector('#all');
-const newButton = document.querySelector('#new');
+const allButton = document.createElement('button');
+const newButton = document.createElement('button');
 const HOST = 'https://safe-badlands-07776.herokuapp.com';
 let token;
+
+allButton.textContent = 'All Posts';
+newButton.textContent = 'New Post';
+allButton.id = 'all';
+newButton.id = 'new';
 
 loginForm.addEventListener('submit', function (e) {
 	e.preventDefault();
@@ -26,6 +31,7 @@ loginForm.addEventListener('submit', function (e) {
 		}
 		throw new Error('Invalid Username or Password');
 	}).then(function (res) {
+		console.log(res)
 		token = res.token;
 		displayAllPosts();
 	}).catch(function (err) {
@@ -45,6 +51,7 @@ const displayAllPosts = function () {
 
 	removeAllChildren(main);
 	main.appendChild(title);
+	main.appendChild(newButton);
 
 	fetch(`${HOST}/posts`, {
 		method: 'GET',
@@ -73,13 +80,14 @@ const displayAllPosts = function () {
 			const date = document.createElement('p');
 
 			title.textContent = post.title;
-			title.id = post._id;
-			title.style.cursor = 'pointer';
 			introduction.textContent = `${post.body.slice(0,100)}...`;
 			date.textContent = post.date;
+			date.classList.add('small');
 
-			title.addEventListener('click', function (e) {
-				displayPost(`${HOST}/posts/${e.target.id}`);
+			wrapper.id = post._id;
+			wrapper.classList.add('clickable');
+			wrapper.addEventListener('click', function (e) {
+				displayPost(`${HOST}/posts/${this.id}`);
 			});
 
 			wrapper.appendChild(title);
@@ -123,6 +131,7 @@ const displayPost = function (postURL) {
 		const comments = generateComments(res.comments);
 
 		date.textContent = res.post.date;
+		date.classList.add('small');
 		deleteButton.textContent = 'Delete';
 		title.textContent = 'Editting Post';
 
@@ -141,9 +150,10 @@ const displayPost = function (postURL) {
 
 		removeAllChildren(main);
 		main.appendChild(title);
+		main.appendChild(allButton);
 		main.appendChild(date);
-		main.appendChild(deleteButton);
 		main.appendChild(post);
+		main.appendChild(deleteButton);
 		main.appendChild(comments);
 
 	});
@@ -244,6 +254,7 @@ const generateComments = function (comments) {
 			user.textContent = comment.name ? comment.name : 'anonymous';
 			body.textContent = comment.body;
 			date.textContent = comment.date;
+			date.classList.add('small');
 
 			div.appendChild(user);
 			div.appendChild(date);
@@ -267,6 +278,7 @@ newButton.addEventListener('click', function (e) {
 	title.textContent = 'Create New Post';
 	removeAllChildren(main);
 	main.appendChild(title);
+	main.appendChild(allButton);
 	main.appendChild(form);
 });
 
