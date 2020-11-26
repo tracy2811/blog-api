@@ -4,26 +4,38 @@
 <head>
 	<meta charset="utf-8">
 	<title>Blog API</title>
-	<link rel="icon" type="image/png" href="./favicon.png" />
+	<link rel="icon" type="image/png" href="favicon.png" />
 	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
-	<link ref="stylesheet" href="./reset.css">
-	<link ref="stylesheet" href="./main.css">
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" href="main.css">
+	<script src="lottie.min.js"></script>
+	<!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
 </head>
 
 <body>
 	<h1>Blog API</h1>
 
 	<ul>
-		<li><a href="./blog/index.html">Blog Page</a></li>
-		<li><a href="./admin/index.html">Admin Page</a>
-			<ul>
-				<li>Username: tracy</li>
-				<li>Password: nguyen</li>
-			</ul>
+		<li><a href="./blog">
+				<span id="blog-animation"></span>
+				<span>Blog Page</span>
+			</a></li>
+		<li><a href="./admin">
+				<span id="admin-animation"></span>
+				<span>Admin Page</span>
+			</a>
 		</li>
-		<li><a href="">Source Code</a></li>
+		<li><a href="https://github.com/tracy2811/blog-api"><span id="source-animation"></span><span>Source Code</span></a>
+		</li>
 	</ul>
+
+	<footer>
+		<p>&copy;Copyright 2020 by <a href="https://github.com/tracy2811/">Trang Nguyen</a>. All rights reserved.</p>
+	</footer>
+	<script src="index.js"></script>
 </body>
 
 </html>

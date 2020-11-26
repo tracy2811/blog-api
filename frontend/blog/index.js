@@ -1,8 +1,7 @@
 const HOST = 'https://safe-badlands-07776.herokuapp.com';
 
-const title = document.querySelector('title');
 const home = document.querySelector('#home');
-const author = document.querySelector('#author');
+const intro = document.querySelector('#intro');
 const main = document.querySelector('#main');
 
 const removeAllChildren = function (element) {
@@ -11,23 +10,22 @@ const removeAllChildren = function (element) {
 	}
 }
 
+const animation = bodymovin.loadAnimation({
+  container: document.querySelector('#ani'),
+  path: '../man-typing.json',
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+});
+
 fetch(HOST + '/author')
 	.then(function (res) {
 		return res.json();
 	})
 	.then(function (res) {
-		const name = document.createElement('h2');
-		const introduction = document.createElement('p');
 		const fullname = `${res.firstName} ${res.lastName}`;
-
-		name.textContent = fullname;
-		introduction.textContent = res.introduction;
-
-		author.appendChild(name);
-		author.appendChild(introduction);
-
+		intro.textContent = res.introduction;
 		home.textContent = `${fullname}'s Blog`;
-		title.textContent = `${fullname}'s Blog`;
 	});
 
 const displayAllPosts = function () {
@@ -50,6 +48,8 @@ const displayAllPosts = function () {
 				div.style.cursor = 'pointer';
 				introduction.dataset.postID = post._id;
 				date.dataset.postID = post._id;
+				date.classList.add('small');
+				div.classList.add('clickable');
 				div.addEventListener('click', function (e) {
 					displayPost(`${HOST}/posts/${e.target.dataset.postID}`);
 				});
@@ -74,6 +74,7 @@ const displayPost = function (postURL) {
 		const comments = generateComments(res.comments);
 		const form = generateCommentForm(postURL);
 
+		date.classList.add('small');
 		date.textContent = res.post.date;
 		title.textContent = res.post.title;
 
@@ -118,6 +119,7 @@ const generateComments = function (comments) {
 			user.textContent = comment.name ? comment.name : 'anonymous';
 			body.textContent = comment.body;
 			date.textContent = comment.date;
+			date.classList.add('small');
 
 			div.appendChild(user);
 			div.appendChild(date);
